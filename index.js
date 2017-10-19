@@ -3,6 +3,9 @@ var {parseArgs} = require("./lib/parseArgs")
 var {types} = require("./lib/types")
 var {error} = require("./lib/error")
 var {cout} = require("./lib/cout")
+var {checkTree} = require("./lib/checkTree")
+
+
 
 exports.command = {
   tree: {},
@@ -29,6 +32,11 @@ exports.command = {
     this.types[typeName] = fn
   },
   run() {
+    var treeError = checkTree(this.tree)
+    if(treeError){
+      cout.error("abort execution\n")
+      return
+    }
     var arguments = process.argv.slice(2, process.argv.length)
     var args = Array.prototype.slice.call(arguments);
     var parms=[]
@@ -46,7 +54,7 @@ exports.command = {
       if(result.length>0){
         console.log(result)
       }else{
-        execPointer.$FN(...parms)
+        execPointer.$FN(result)
       }
     }else{
       console.log("syntax error")

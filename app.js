@@ -6,7 +6,7 @@ command.syntaxTree({
   $HELP:function(){
 
   },
-  $ARGS: [{type: "json",required: true,label: "user_name",name:"userName"}],
+  $ARGS: [{type: "json",required: true,label: "user_name"}],
   login: {
     $ARGS: [{type: "string",required: true,label: "user_name",name:"userName"}],
     $FN: function () {
@@ -29,14 +29,17 @@ command.syntaxTree({
     table: { // cmd : nojsdb create table table_name [table_scheam] 
       $ARGS: [{type: "string",required: true,name:"tableName"},
               {type: "json",required: false,name:"scheam"}],
-      $FN: function () {
-        console.log(arguments)
-        console.log(` nojsdb create table table_name [table_scheam] ok`)
+      $FN: function ({tableName,scheam}) {
+        console.log(tableName,scheam)
+        //console.log(` nojsdb create table ${tableName} [table_scheam] ok`)
       },
       $HELP:function(){
 
       }
     }
+  },
+  convert:{//maped variables
+    $ARGS:[{type:"any"}]
   }
 })
 command.addType("json", function (val) {

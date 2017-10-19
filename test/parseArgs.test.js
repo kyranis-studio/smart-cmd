@@ -42,7 +42,7 @@ describe("#Success Scenario ", () => {
       $ARGS: [{label:"copy",required:false,type:"string"}]
     }
     it("shoud execute the function", () => {
-      var fn=parseArgs([], tree).should.to.be.true
+      var fn=parseArgs([], tree).should.to.be.a("object")
     })
   })
   /*-------------------------------------------------------------------*/
