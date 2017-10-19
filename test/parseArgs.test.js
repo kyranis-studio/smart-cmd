@@ -2,7 +2,7 @@ var expect = require("chai").expect
 var should = require("chai").should()
 var _ = require("lodash")
 var {parseArgs} = require("../lib/parseArgs")
-describe("#Wrong Scenario", () => {
+describe("#Parse Arguments Wrong Scenario", () => {
   describe("#excute with wrong type argument  required = false ", () => {
     var tree1 = {
       $ARGS: [{label:"copy",required:true,type:"number"}]
@@ -35,7 +35,7 @@ describe("#Wrong Scenario", () => {
   })  
 })
 
-describe("#Success Scenario ", () => {
+describe("#Parse Arguments Success Scenario ", () => {
   describe("#excute whithout argument required = false ", () => {
     var tree = {
       $FN:function(){console.log("function executed")},

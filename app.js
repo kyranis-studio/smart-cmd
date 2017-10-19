@@ -1,12 +1,11 @@
-var {command} = require("./index")
+var {command,} = require("./index")
 command.syntaxTree({
   $FN:function(){
     console.log("main whith arguments")
   },
   $HELP:function(){
-
   },
-  $ARGS: [{type: "json",required: true,label: "user_name"}],
+  $ARGS: [{type: "json",required: true,label: "user_name",name:"help"}],
   login: {
     $ARGS: [{type: "string",required: true,label: "user_name",name:"userName"}],
     $FN: function () {
@@ -27,8 +26,8 @@ command.syntaxTree({
       }
     },
     table: { // cmd : nojsdb create table table_name [table_scheam] 
-      $ARGS: [{type: "string",required: true,name:"tableName"},
-              {type: "json",required: false,name:"scheam"}],
+      $ARGS: [{required: true,name:"tableName"},
+              {required: true,name:"scheam",type:"json"}],
       $FN: function ({tableName,scheam}) {
         console.log(tableName,scheam)
         //console.log(` nojsdb create table ${tableName} [table_scheam] ok`)
@@ -39,7 +38,7 @@ command.syntaxTree({
     }
   },
   convert:{//maped variables
-    $ARGS:[{type:"any"}]
+    $ARGS:[{name:"HelpMe"}]
   }
 })
 command.addType("json", function (val) {

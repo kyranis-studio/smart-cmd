@@ -4,9 +4,6 @@ var {types} = require("./lib/types")
 var {error} = require("./lib/error")
 var {cout} = require("./lib/cout")
 var {checkTree} = require("./lib/checkTree")
-
-
-
 exports.command = {
   tree: {},
   error,
@@ -16,13 +13,20 @@ exports.command = {
     this.error[fnName] = callback.bind(error)
   },
   syntaxTree(tree) {
-    this.tree = tree
+    var checkedTree = checkTree(tree)
+    
+    if(checkedTree){
+      this.tree = checkedTree
+    }else{
+      cout.error("abort execution\n")
+      return
+    }
   },
   addType(typeName, fn) {
     if (this.types[typeName]) {
       cout.warning(`the type " ${typeName} " already exist \n`).
-      error(`choose another name for this type \n`).
-      info(`help : if you want to override it use overrideType function instead\n`)
+      log(`choose another name for this type \n`).
+      log(`help : if you want to override it use overrideType function instead\n`)
       throw "type exist"
       return
     }
@@ -32,11 +36,6 @@ exports.command = {
     this.types[typeName] = fn
   },
   run() {
-    var treeError = checkTree(this.tree)
-    if(treeError){
-      cout.error("abort execution\n")
-      return
-    }
     var arguments = process.argv.slice(2, process.argv.length)
     var args = Array.prototype.slice.call(arguments);
     var parms=[]
