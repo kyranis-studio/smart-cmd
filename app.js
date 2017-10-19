@@ -30,7 +30,7 @@ command.syntaxTree({
               {required: true,name:"scheam",type:"json"}],
       $FN: function ({tableName,scheam}) {
         console.log(tableName,scheam)
-        //console.log(` nojsdb create table ${tableName} [table_scheam] ok`)
+        console.log(` nojsdb create table ${tableName} [table_scheam] ok`)
       },
       $HELP:function(){
 

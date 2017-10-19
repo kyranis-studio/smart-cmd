@@ -14,7 +14,6 @@ exports.command = {
   },
   syntaxTree(tree) {
     var checkedTree = checkTree(tree)
-    
     if(checkedTree){
       this.tree = checkedTree
     }else{
@@ -40,23 +39,25 @@ exports.command = {
     var args = Array.prototype.slice.call(arguments);
     var parms=[]
     parms=args.slice(0,args.length)
-    var i=0
+    var index=0
     var execPointer = this.tree
     for (i in args) {
        if(execPointer[args[i]]!= undefined){
         execPointer=execPointer[args[i]]
          parms.splice(0,1)
+         index++
        }
     }
     if(execPointer["$ARGS"]){
       var result= parseArgs(parms,execPointer)
       if(result.length>0){
-        console.log(result)
+        error.argsCheck(result,cout)
       }else{
         execPointer.$FN(result)
       }
     }else{
-      console.log("syntax error")
+      cmd=args.slice(0,index)
+      error.syntaxError(execPointer,cmd,cout)
     }
   }
 }
