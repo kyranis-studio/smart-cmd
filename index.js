@@ -1,13 +1,12 @@
 var log = require('terminal-kit').terminal;
 var {parseArgs} = require("./lib/parseArgs")
-var {types} = require("./lib/types")
+var {types,addType,overrideType} = require("./lib/types")
 var {error} = require("./lib/error")
 var {cout} = require("./lib/cout")
 var {checkTree} = require("./lib/checkTree")
 exports.command = {
   tree: {},
   error,
-  cout,
   types,
   errorHandler(fnName, callback) {
     this.error[fnName] = callback.bind(error)
@@ -20,19 +19,6 @@ exports.command = {
       cout.error("abort execution\n")
       return
     }
-  },
-  addType(typeName, fn) {
-    if (this.types[typeName]) {
-      cout.warning(`the type " ${typeName} " already exist \n`).
-      log(`choose another name for this type \n`).
-      log(`help : if you want to override it use overrideType function instead\n`)
-      throw "type exist"
-      return
-    }
-    this.types[typeName] = fn
-  },
-  overrideType(typeName, fn) {
-    this.types[typeName] = fn
   },
   run() {
     var arguments = process.argv.slice(2, process.argv.length)
@@ -61,3 +47,8 @@ exports.command = {
     }
   }
 }
+exports.cout=cout
+exports.types=types
+exports.addType=addType
+exports.overrideType=overrideType
+
