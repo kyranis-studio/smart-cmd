@@ -1,16 +1,12 @@
 var log = require('terminal-kit').terminal;
 var {parseArgs} = require("./lib/parseArgs")
+var {parseKeyValue} = require("./lib/parseKeyValue")
 var {types,addType,overrideType} = require("./lib/types")
-var {error} = require("./lib/error")
+var {errorHandler,getError} = require("./lib/error")
 var {cout} = require("./lib/cout")
 var {checkTree} = require("./lib/checkTree")
 exports.command = {
   tree: {},
-  error,
-  types,
-  errorHandler(fnName, callback) {
-    this.error[fnName] = callback.bind(error)
-  },
   syntaxTree(tree) {
     var checkedTree = checkTree(tree)
     if(checkedTree){
@@ -21,6 +17,7 @@ exports.command = {
     }
   },
   run() {
+    var error=getError()
     var arguments = process.argv.slice(2, process.argv.length)
     var args = Array.prototype.slice.call(arguments);
     var parms=[]
@@ -35,11 +32,19 @@ exports.command = {
        }
     }
     if(execPointer["$ARGS"]){
-      var result= parseArgs(parms,execPointer)
+      if(execPointer["$ARGS"].length){
+        var result= parseArgs(parms,execPointer)
+      }else{
+        var result=parseKeyValue(args,execPointer)
+      }
       if(result.length>0){
         error.argsCheck(result,cout)
       }else{
-        execPointer.$FN(result)
+        try{
+          execPointer.$FN(result)
+        }catch(err){
+
+        }
       }
     }else{
       cmd=args.slice(0,index)
@@ -51,4 +56,4 @@ exports.cout=cout
 exports.types=types
 exports.addType=addType
 exports.overrideType=overrideType
-
+exports.errorHandler=errorHandler

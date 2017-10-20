@@ -1,4 +1,4 @@
-var {command,cout,addType,overrideType} = require("./index")
+var {command,cout,addType,overrideType,errorHandler} = require("./index")
 command.syntaxTree({
   $FN:function(){
     console.log("main whith arguments")
@@ -38,7 +38,7 @@ command.syntaxTree({
     }
   },
   convert:{//maped variables
-    $ARGS:[{name:"HelpMe"}]
+    $ARGS:{input:"ok"}
   }
 })
 addType("json", function (val) {
@@ -59,6 +59,5 @@ overrideType("string", function (val) {
     return false
   }
 })
-
 command.run()
 
