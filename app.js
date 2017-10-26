@@ -1,63 +1,43 @@
-var {command,cout,addType,overrideType,errorHandler} = require("./index")
+"use strict";
+var term = require( 'terminal-kit' ).terminal ;
+var {command,errCode} = require( "./index")
 command.syntaxTree({
-  $FN:function(){
-    console.log("main whith arguments")
+  $ARGS:[{name:"input",required:true,alias:["--i","-input"],type:"any"},
+  {name:"output",alias:["-o","-out"]}],
+  $FN({input}){
+    console.log(input)
   },
-  $HELP:function(){
+  $HELP(){
+
   },
-  $ARGS: [{type: "json",required: true,label: "user_name",name:"help"}],
-  login: {
-    $ARGS: [{type: "string",required: true,label: "user_name",name:"userName"}],
-    $FN: function () {
-      console.log("login exec")
+  login:{
+    $ARGS:[{name:"admin"},{name:"userName",required:true}],
+    $FN({admin,userName}){
+      console.log(admin,userName)
     },
-    $HELP: function () {
-      
+    $HELP(){
+
     }
   },
-  create: {
-    su: { // cmd : nojsdb create su super_user_name
-      $ARGS: [{type: "string",required: true,label: "super_user_name",name:"su"}],
-      $FN: function () {
-        console.log(" nojsdb create su super_user_name ok")
+  create:{
+    su:{
+      $ARGS:[{name:"userName",required:true}],
+      $FN({userName}){
+        console.log(userName)
       },
-      $HELP: function () {
+      $HELP(){
 
       }
     },
-    table: { // cmd : nojsdb create table table_name [table_scheam] 
-      $ARGS: [{required: true,name:"tableName"},
-              {required: true,name:"scheam",type:"json"}],
-      $FN: function ({tableName,scheam}) {
-        console.log(tableName,scheam)
-        console.log(` nojsdb create table ${tableName} [table_scheam] ok`)
+    table:{
+      $ARGS:[{name:"tableName",required:true},{name:"scheam",type:"json"}],
+      $FN(){
+
       },
-      $HELP:function(){
+      $HELP(){
 
       }
-    }
-  },
-  convert:{//maped variables
-    $ARGS:{input:"ok"}
-  }
-})
-addType("json", function (val) {
-  try {
-    JSON.parse(val)
-    return true
-  } catch (err) {
-    return false
-  }
-})
-overrideType("string", function (val) {
-  if(val==undefined )
-    return false
-  try {   
-    eval("var " + val)
-    return true
-  } catch (err) {
-    return false
+    },
   }
 })
 command.run()
-

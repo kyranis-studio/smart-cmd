@@ -1,59 +1,68 @@
-var log = require('terminal-kit').terminal;
-var {parseArgs} = require("./lib/parseArgs")
-var {parseKeyValue} = require("./lib/parseKeyValue")
-var {types,addType,overrideType} = require("./lib/types")
-var {errorHandler,getError} = require("./lib/error")
-var {cout} = require("./lib/cout")
-var {checkTree} = require("./lib/checkTree")
+"use strict";
+var term = require( 'terminal-kit' ).terminal ;
+var {parseTree}=require("./lib/parseTree")
+var {parseArgs}=require("./lib/parseArgs")
+var {errors}=require("./lib/errors")
+var {addType}=require("./lib/types")
+exports.errCode={
+  UNDEFINED_ALIAS:0,
+  MISSING_INPUT:1,
+  WRONG_TYPE:2,
+  MISSING_REQUIREMENT:3,
+  ARGUMENT_OVERLOAD:4,
+  REQUIRED_FIELD:5
+}
 exports.command = {
   tree: {},
+  errors,
+  addType,
   syntaxTree(tree) {
-    var checkedTree = checkTree(tree)
-    if(checkedTree){
-      this.tree = checkedTree
-    }else{
-      cout.error("abort execution\n")
-      return
-    }
+    this.tree = tree
   },
   run() {
-    var error=getError()
-    var arguments = process.argv.slice(2, process.argv.length)
-    var args = Array.prototype.slice.call(arguments);
+    parseTree(this.tree)
+    var args = Array.prototype.slice.call(process.argv.slice(2, process.argv.length));
     var parms=[]
+    var cmds=[]
     parms=args.slice(0,args.length)
-    var index=0
     var execPointer = this.tree
-    for (i in args) {
-       if(execPointer[args[i]]!= undefined){
-        execPointer=execPointer[args[i]]
-         parms.splice(0,1)
-         index++
-       }
-    }
-    if(execPointer["$ARGS"]){
-      if(execPointer["$ARGS"].length){
-        var result= parseArgs(parms,execPointer)
+    for(var arg of args){
+      if(execPointer[arg]){
+        execPointer=execPointer[arg]
+        cmds.push(arg)
+        parms.splice(0,1)
       }else{
-        var result=parseKeyValue(args,execPointer)
-      }
-      if(result.length>0){
-        error.argsCheck(result,cout)
-      }else{
-        try{
-          execPointer.$FN(result)
-        }catch(err){
-
+        if(execPointer["$ARGS"]){
+          break
         }
       }
+    }
+    if(execPointer.$ARGS){
+      var result = parseArgs(parms,execPointer)
     }else{
-      cmd=args.slice(0,index)
-      error.syntaxError(execPointer,cmd,cout)
+      term.red.error("sub-command error :\n")
+      term.error(`wrong sub-command [ ${cmds[cmds.length-1]} ]  expect :\n`)
+      Object.keys(execPointer).forEach(function(subCmd){
+        term.green(`  ${subCmd}\n`)
+      })
+      throw "sub-command error"
+    }
+    
+    if(result && result.length>0){
+      errors.errorsHandler(result)
+    }else{
+      try{
+        if(result!==undefined)
+        execPointer.$FN(result)
+      }catch(err){
+        if(cmds.length>0){
+          var command=cmds.join(" ") 
+        }else{
+          var command="Root"
+        }
+        term.red("error : ")
+        term(`[ ${command} ] has no function to run\n`)
+      }
     }
   }
 }
-exports.cout=cout
-exports.types=types
-exports.addType=addType
-exports.overrideType=overrideType
-exports.errorHandler=errorHandler

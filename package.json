@@ -4,7 +4,7 @@
   "description": "a smart way to develop  node cli",
   "main": "index.js",
   "scripts": {
-    "test": "mocha */*.test.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "wael zekri",
   "license": "MIT",
