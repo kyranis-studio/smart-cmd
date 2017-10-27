@@ -39,13 +39,15 @@ exports.command = {
     }
     if(execPointer.$ARGS){
       var result = parseArgs(parms,execPointer)
-    }else{
+    }else if(!execPointer.$FN){
       term.red.error("sub-command error :\n")
       term.error(`wrong sub-command [ ${cmds[cmds.length-1]} ]  expect :\n`)
       Object.keys(execPointer).forEach(function(subCmd){
         term.green(`  ${subCmd}\n`)
       })
       throw "sub-command error"
+    }else{
+      execPointer.$FN()
     }
     
     if(result && result.length>0){

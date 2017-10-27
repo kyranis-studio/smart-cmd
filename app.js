@@ -2,18 +2,18 @@
 var term = require( 'terminal-kit' ).terminal ;
 var {command,errCode} = require( "./index")
 command.syntaxTree({
-  $ARGS:[{name:"input",required:true,alias:["--i","-input"],type:"any"},
-  {name:"output",alias:["-o","-out"]}],
-  $FN({input}){
-    console.log(input)
+
+  $FN(){
+    console.log("ok")
   },
   $HELP(){
 
   },
   login:{
-    $ARGS:[{name:"admin"},{name:"userName",required:true}],
-    $FN({admin,userName}){
-      console.log(admin,userName)
+    $FLAGS:["--help"],
+    $ARGS:[{name:"userName",alias:["-u"]}],
+    $FN({userName,$FLAGS}){
+      console.log(userName,$FLAGS)
     },
     $HELP(){
 
