@@ -4,6 +4,8 @@ var {parseTree}=require("./lib/parseTree")
 var {parseArgs}=require("./lib/parseArgs")
 var {errors}=require("./lib/errors")
 var {addType}=require("./lib/types")
+var {terminal}=require("./lib/terminal")
+exports.terminal=terminal
 exports.errCode={
   UNDEFINED_ALIAS:0,
   MISSING_INPUT:1,
@@ -15,13 +17,19 @@ exports.errCode={
 exports.command = {
   tree: {},
   errors,
+  terminal,
   addType,
   syntaxTree(tree) {
     this.tree = tree
+    parseTree(this.tree)
   },
   run() {
-    parseTree(this.tree)
-    var args = Array.prototype.slice.call(process.argv.slice(2, process.argv.length));
+    var args=[]
+    if(!arguments[0]){
+      args = Array.prototype.slice.call(process.argv.slice(2, process.argv.length));
+    }else{
+      args=arguments[0]
+    }
     var parms=[]
     var cmds=[]
     parms=args.slice(0,args.length)
@@ -45,11 +53,10 @@ exports.command = {
       Object.keys(execPointer).forEach(function(subCmd){
         term.green(`  ${subCmd}\n`)
       })
-      throw "sub-command error"
+      
     }else{
       execPointer.$FN()
     }
-    
     if(result && result.length>0){
       errors.errorsHandler(result)
     }else{

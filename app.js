@@ -1,43 +1,63 @@
 "use strict";
 var term = require( 'terminal-kit' ).terminal ;
-var {command,errCode} = require( "./index")
-command.syntaxTree({
+var {command,errCode,terminal} = require( "./index")
 
-  $FN(){
-    console.log("ok")
-  },
-  $HELP(){
-
-  },
-  login:{
-    $FLAGS:["--help"],
-    $ARGS:[{name:"userName",alias:["-u"]}],
-    $FN({userName,$FLAGS}){
-      console.log(userName,$FLAGS)
+const tree={
+    $FN(){
+      
     },
     $HELP(){
-
-    }
-  },
-  create:{
-    su:{
-      $ARGS:[{name:"userName",required:true}],
-      $FN({userName}){
-        console.log(userName)
-      },
-      $HELP(){
-
+  
+    },
+    bonjour:{
+      $ARGS:[{name:"nom",type:"string",required:true,alias:["-u"]}],
+      $FN({nom}){
+        console.log(`Ahla ${nom}`)
       }
     },
-    table:{
-      $ARGS:[{name:"tableName",required:true},{name:"scheam",type:"json"}],
+    back:{
       $FN(){
-
-      },
-      $HELP(){
-
+        terminal.popPrompt()
       }
     },
+    login:{
+      $FLAGS:["--help"],
+      $ARGS:[{name:"userName",alias:["-u"]}],
+      $FN({userName,$FLAGS}){
+        console.log(userName,$FLAGS)
+      },
+      $HELP(){
+  
+      }
+    },
+    selectDB:{
+      $ARGS:[{name:"dbName"}],
+      $FN({dbName}){
+        terminal.pushPrompt(`[db:${dbName}]`)
+      },
+    },
+    create:{
+      su:{
+        $ARGS:[{name:"userName",required:true}],
+        $FN({userName}){
+          console.log(userName)
+        },
+        $HELP(){
+  
+        }
+      },
+      table:{
+        $ARGS:[{name:"tableName",required:true},{name:"scheam",type:"json"}],
+        $FN({tableName,scheam}){
+          console.log(tableName,scheam)
+        },
+        $HELP(){
+  
+        }
+      },
+    }
   }
-})
-command.run()
+ command.syntaxTree(tree)
+ terminal.init({root:"NOJSDB"})
+ 
+ terminal.run()
