@@ -3,11 +3,9 @@ var term = require( 'terminal-kit' ).terminal ;
 var {command,errCode,terminal} = require( "./index")
 
 const tree={
-    $FN(){
-      
-    },
-    $HELP(){
-  
+    $ARGS:[],
+    $FN(prams){
+      console.log(prams)
     },
     bonjour:{
       $ARGS:[{name:"nom",type:"string",required:true,alias:["-u"]}],
@@ -25,9 +23,6 @@ const tree={
       $ARGS:[{name:"userName",alias:["-u"]}],
       $FN({userName,$FLAGS}){
         console.log(userName,$FLAGS)
-      },
-      $HELP(){
-  
       }
     },
     selectDB:{
@@ -41,18 +36,12 @@ const tree={
         $ARGS:[{name:"userName",required:true}],
         $FN({userName}){
           console.log(userName)
-        },
-        $HELP(){
-  
         }
       },
       table:{
         $ARGS:[{name:"tableName",required:true},{name:"scheam",type:"json"}],
         $FN({tableName,scheam}){
           console.log(tableName,scheam)
-        },
-        $HELP(){
-  
         }
       },
     }

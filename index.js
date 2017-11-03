@@ -12,7 +12,8 @@ exports.errCode={
   WRONG_TYPE:2,
   MISSING_REQUIREMENT:3,
   ARGUMENT_OVERLOAD:4,
-  REQUIRED_FIELD:5
+  REQUIRED_FIELD:5,
+  UNEXPECTED_ARGUMENTS:6
 }
 exports.command = {
   tree: {},
@@ -55,7 +56,7 @@ exports.command = {
       })
       
     }else{
-      execPointer.$FN()
+      execPointer.$FN(Array.from(parms))
     }
     if(result && result.length>0){
       errors.errorsHandler(result)
