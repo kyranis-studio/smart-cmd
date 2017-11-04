@@ -93,7 +93,7 @@ UNEXPECTED_ARGUMENTS=6
 	})
   5. terminal
 
-  terminal.init(prompt) init the prompt\
+  terminal.init(prompt) init the prompt
   
   - prompt object:
   	- prefix
@@ -110,7 +110,7 @@ run node app.js you get an node interface with a prompt
 
 ctrl+c to quit
 
-  terminal.pushPrompt()\
+  terminal.pushPrompt()
   ------
 	const {terminal}=required(“smart-cmd”)
 	terminal.init({prefix:"$",root:"myShell",postfix:">"})
@@ -277,12 +277,12 @@ when you pass multiple arguments the order matter you cannot change the order of
     run node app.js myfile.txt /home/username
 
 **Examples with required arguments**\
-if you forget to pass an error message is shown see previous example
+if you forget to pass the required argument an error message is shown see previous example
 
 **Examples with optional arguments**\
 if required is omitted or equal to false the arguments is optional
 
-**Examples pass null to optional arguments**\
+**Examples pass null to optional arguments**
 
     const {command}=required(“smart-cmd”)
     const fs=required(“fs”)
