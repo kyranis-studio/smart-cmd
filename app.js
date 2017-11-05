@@ -25,6 +25,11 @@ const tree={
         console.log(userName,$FLAGS)
       }
     },
+    clearPrompt:{
+      $FN(){
+        terminal.clearPrompt()
+      }
+    },
     selectDB:{
       $ARGS:[{name:"dbName"}],
       $FN({dbName}){        

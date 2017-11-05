@@ -107,7 +107,6 @@ ctrl+c to quit
   ------
 	const {command}=require("smart-cmd")
 	terminal.pushPrompt("/hello")
-	terminal.setPrompt()
 	terminal.run({prefix:"$",root:"myShell",postfix:">"})
   
   run node app.js
@@ -119,14 +118,14 @@ ctrl+c to quit
   - root      exemple : terminal.prompt.prefix="myshell"
   - postfix  exemple : terminal.prompt.prefix=">"
   	
-  terminal.popPrompt(array)\
-  terminal.clearPrompt()\
+  terminal.clearPrompt() clear the pushed elements in the prompt\
+  terminal.setPrompt(array)\
   terminal.popPrompt()\
   
   	const {command}=require("smart-cmd")
 	terminal.pushPrompt("/hello")
 	terminal.popPrompt()
-	terminal.setPrompt()
+
 	terminal.run({prefix:"$",root:"myShell",postfix:">"})
 
   run node app.js
