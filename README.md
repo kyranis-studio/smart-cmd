@@ -87,8 +87,8 @@ REQUIRED_FIELD=5\
 UNEXPECTED_ARGUMENTS=6
 	
   -------
-  	const {command}=require("smart-cmd")
-	command.overrideError(MISSING_INPUT,function(error){
+  	const {command,errCode}=require("smart-cmd")
+	command.overrideError(errCode.MISSING_INPUT,function(error){
 		console.log("missing input")
 	})
   5. terminal

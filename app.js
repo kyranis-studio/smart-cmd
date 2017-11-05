@@ -1,6 +1,7 @@
 "use strict";
 var term = require( 'terminal-kit' ).terminal ;
 var {command,errCode,terminal} = require( "./index")
+var fs = require("fs)
 
 const tree={
     $ARGS:[],
