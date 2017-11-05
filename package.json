@@ -1,6 +1,6 @@
 {
   "name": "smart-cmd",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a smart way to develop  node cli",
   "main": "index.js",
   "scripts": {

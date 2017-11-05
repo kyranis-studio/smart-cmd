@@ -176,31 +176,29 @@ Run node app.js myfile.txt /home/username
 
 **Examples with multiple command:**
 
-    const {command}=require("smart-cmd")
-    const fs=required("fs")
-    
-    command.syntaxTree({
-    copy:{
-	    $ARGS:[
-		    {name:"source",required:true},
-		    {name:"destination",required: true}
+	const { command } = require("smart-cmd")
+	const fs = require("fs")
+
+	command.syntaxTree({
+	  copy: {
+	    $ARGS: [
+	      { name: "source", required: true },
+	      { name: "destination", required: true }
 	    ],
-	    $FN({source,destination}){
-	    fs.copyFileSync(source,destination)
-	    })
-    },
-    Delete:{
-	    $ARGS:[
-		    {name:"file",required:true},
-		    {name:"destination",required: true}
-		],
-		    $FN({file}){
-			    fs.unlinkSync(source,destination)
-		    })
-		},
-	 }
-    })
-    command.run()
+	    $FN({ source, destination }) {
+	      fs.copyFileSync(source, destination)
+	    }
+	  },
+	  delete: {
+	    $ARGS: [
+	      { name: "file", required: true }
+	    ],
+	    $FN({ file }) {
+	      fs.unlinkSync(file)
+	    }
+	  }
+	})
+	command.run()
 
 You can run node app.js copy myfile.txt /home/username\
 or can run node app.js detete /home/username/myfile.txt
@@ -209,11 +207,11 @@ or can run node app.js detete /home/username/myfile.txt
 
 	const { command } = require("smart-cmd")
 	command.syntaxTree({
-	  Add: {
-	    User: {
+	  add: {
+	    user: {
 	      $ARGS: [{ name: "userName", label: "user_name", required: true }],
 	      $FN({ userName }) {
-		console.log(`${userName} successfully added`)
+	    console.log(`${userName} successfully added`)
 	      }
 	    }
 	  }
@@ -265,18 +263,18 @@ run node app.js hello world !
 **Examples with $ARGS multiples arguments**\
 when you pass multiple arguments the order matter you cannot change the order of arguments
 
-    const {command}=require("smart-cmd")
-    const fs=required("fs")
-    
-    command.syntaxTree({
-	 $ARGS:[{name:”source”,required:true},{name:"destination",required: true}],
+	const {command}=require("smart-cmd")
+	const fs=required("fs")
+
+	command.syntaxTree({
+	 $ARGS:[{name:"source",required:true},{name:"destination",required: true}],
 	 $FN({source,destination}){
 	    fs.copyFileSync(source,destination)
 	  }
-    })
-    command.run()
+	})
+	command.run()
    -----
-    run node app.js myfile.txt /home/username
+    run node app.js myfile.txt copy.txt
 
 **Examples with required arguments**\
 if you forget to pass the required argument an error message is shown see previous example
@@ -286,36 +284,36 @@ if required is omitted or equal to false the arguments is optional
 
 **Examples pass null to optional arguments**
 
-    const {command}=require("smart-cmd")
-    const fs=required("fs")
-    
-    command.syntaxTree({
+	const {command}=require("smart-cmd")
+
+	command.syntaxTree({
 	convert:{
-		$ARGS:[{name:"input",required:true},{name:"format"},{name:"output",required:true}],
-		$FN({convert,format,output}){
-			//your code to conver video ....
-		}
+	    $ARGS:[{name:"input",required:true},{name:"format"},{name:"output",required:true}],
+	    $FN({input,format,output}){
+	      console.log({input,format,output})
+		//your code to conver video ....
+	    }
 	}
-    })
-    command.run()
+	})
+	command.run()
 -----
 	run node app convert movie.avi [null] movie.mp4
 
 **Examples with alias**\
 you can rewrite the previous example with alias .alias is more flexible you can pass arguments in the order you want it like key value objects
 
-    const {command}=require(“smart-cmd”)
-    const fs=required(“fs”)
-    
-    command.syntaxTree({
-	convert:{
-		$ARGS:[{name:"input",required:true,alias:[-i,-input]},{name:"format",alias:[-format,-f]},{name:"output",required:true,[-out,-o]}],
-		$FN({convert,format,output}){
-			//your code to conver video ....
-		}
-	}
-    })
-    command.run()
+	const { command } = require("smart-cmd")
+
+	command.syntaxTree({
+	  convert: {
+	    $ARGS: [{ name: "input", required: true, alias: ["-i", "-input"] }, { name: "format", alias: ["-format", "-f"] }, { name: "output", required: true, alias: ["-out", "-o"] }],
+	    $FN({ input, format, output }) {
+	      console.log(input, format, output)
+	      //your code to conver video ....
+	    }
+	  }
+	})
+	command.run()
 -----
 	run node app convert -out movie.mp4 -input movie.avi 
 or
@@ -327,19 +325,18 @@ or
 **Examples with $FLAGS**\
 flags is an array you can pass to your function . you can use it to change the behaviour of your function like force some command
 
-    const {command}=require("smart-cmd")
-    const fs=required("fs")
-    
-    command.syntaxTree({
-	rmdir:{
-		$FLAGS:["-f",--force],
-		$ARGS:[{name:"folder"}],
-		$FN({folder,$FLAGS}){
-			console.log(folder,$FLAGS)
-		}
-	}
-    })
-    command.run()
+const { command } = require("smart-cmd")
+
+	command.syntaxTree({
+	  rmdir: {
+	    $FLAGS: ["-f", "--force"],
+	    $ARGS: [{ name: "folder" }],
+	    $FN({ folder, $FLAGS }) {
+	      console.log(folder, $FLAGS)
+	    }
+	  }
+	})
+	command.run()
 ------
 	run node app.js rmdir myfolder -f
 ----
