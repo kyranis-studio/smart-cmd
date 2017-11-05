@@ -47,6 +47,6 @@ const tree={
     }
   }
  command.syntaxTree(tree) 
- terminal.init({root:"NOJSDB"})
+ //terminal.init({root:"NOJSDB"})
  
- terminal.run()
+ command.run()

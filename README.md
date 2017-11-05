@@ -15,16 +15,16 @@ Let's suppose you wanna make command line to copy a file to a destination
     
 ----------
 
-    const {command}=required(“smart-cmd”)
-    const fs=required(“fs”)
-    
-    command.syntaxTree({
-	 $ARGS:[{name:”source”,required:true},{name:destination,required: true}],
+	const {command}=require("smart-cmd")
+	const fs=require("fs")
+
+	command.syntaxTree({
+	 $ARGS:[{name:"source",required:true},{name:"destination",required: true}],
 	 $FN({source,destination}){
 	    fs.copyFileSync(source,destination)
 	  }
-    })
-    command.run()
+	})
+	command.run()
 ------
  	run node app.js myfile.txt /home/username
 
@@ -46,31 +46,31 @@ sytaxTree Object:
   
 	 - type_name : string
 	 - calback function
-	 
- ------
+
+----
  
-  	const {command}=required(“smart-cmd”)
-  	command.addType("json",function(value){
-	try{
-	      JSON.parse(val)
-	      return true
-	    }catch(err){
-	      return false
-	    }
-  	})
+	const { command } = require("smart-cmd")
+	command.addType("json", function (value) {
+	  try {
+	    JSON.parse(val)
+	    return true
+	  } catch (err) {
+	    return false
+	  }
+	})
  	 
   3. command.overrideType(callback) : return a boolean
   override pre existed type
 	 - type_name : string
 	 - calback function
   -----
-	const {command}=required(“smart-cmd”)
-	command.overrideType("json",function(value){
-		if(JSON.stringify(value)){
-			return true
-		}else{
-			return false
-		}
+	const { command } = require("smart-cmd")
+	command.overrideType("json", function (value) {
+	  if (JSON.stringify(value)) {
+	    return true
+	  } else {
+	    return false
+	  }
 	})
 	
   4. command.overrideError(errorCode,callback)
@@ -87,7 +87,7 @@ REQUIRED_FIELD=5\
 UNEXPECTED_ARGUMENTS=6
 	
   -------
-  	const {command}=required(“smart-cmd”)
+  	const {command}=require("smart-cmd")
 	command.overrideError(MISSING_INPUT,function(error){
 		console.log("missing input")
 	})
@@ -100,7 +100,7 @@ UNEXPECTED_ARGUMENTS=6
   	- root
   	- postfix
   -------
-	  const {terminal}=required(“smart-cmd”)
+	  const {command}=require("smart-cmd")
 	  terminal.init({prefix:"$",root:"myShell",postfix:">"})
 	  terminal.run()
 	  
@@ -112,7 +112,7 @@ ctrl+c to quit
 
   terminal.pushPrompt()
   ------
-	const {terminal}=required(“smart-cmd”)
+	const {command}=require("smart-cmd")
 	terminal.init({prefix:"$",root:"myShell",postfix:">"})
 	terminal.pushPrompt("/hello")
 	terminal.setPrompt()
@@ -124,7 +124,7 @@ ctrl+c to quit
 	
   terminal.popPrompt()\
   
-  	const {terminal}=required(“smart-cmd”)
+  	const {command}=require("smart-cmd")
 	terminal.init({prefix:"$",root:"myShell",postfix:">"})
 	terminal.pushPrompt("/hello")
 	terminal.popPrompt()
@@ -141,13 +141,13 @@ ctrl+c to quit
 
 **Examples without command:**
 
-    const {command}=required(“smart-cmd”)
-    const fs=required(“fs”)
+    const {command}=require("smart-cmd")
+    const fs=required("fs")
     
     command.syntaxTree({
 	    $ARGS:[
 		    {name:”source”,required:true},
-		    {name:destination,required: true}
+		    {name:"destination",required: true}
 		  ],
 	    $FN({source,destination}){
 		    fs.copyFileSync(source,destination)
@@ -159,12 +159,12 @@ Run node app.js myfile.txt /home/username
 
 **Examples with command:**
 
-    const {command}=required(“smart-cmd”)
-    const fs=required(“fs”)
+    const {command}=require("smart-cmd")
+    const fs=require("fs")
     
     command.syntaxTree({
 	    copy:{
-		    $ARGS:[{name:”source”,required:true},{name:destination,required: true}],
+		    $ARGS:[{name:”source”,required:true},{name:"destination",required: true}],
 		    $FN({source,destination}){
 			  fs.copyFileSync(source,destination)
 		  })
@@ -176,14 +176,14 @@ Run node app.js myfile.txt /home/username
 
 **Examples with multiple command:**
 
-    const {command}=required(“smart-cmd”)
-    const fs=required(“fs”)
+    const {command}=require("smart-cmd")
+    const fs=required("fs")
     
     command.syntaxTree({
     copy:{
 	    $ARGS:[
-		    {name:”source”,required:true},
-		    {name:destination,required: true}
+		    {name:"source",required:true},
+		    {name:"destination",required: true}
 	    ],
 	    $FN({source,destination}){
 	    fs.copyFileSync(source,destination)
@@ -191,8 +191,8 @@ Run node app.js myfile.txt /home/username
     },
     Delete:{
 	    $ARGS:[
-		    {name:”file”,required:true},
-		    {name:destination,required: true}
+		    {name:"file",required:true},
+		    {name:"destination",required: true}
 		],
 		    $FN({file}){
 			    fs.unlinkSync(source,destination)
@@ -207,17 +207,19 @@ or can run node app.js detete /home/username/myfile.txt
 
 **Examples with sub command**
 
-    command.syntaxTree({
-    Add:{
-	    User:{
-			    $ARGS:[{name:”userName”,label:”user_name”,required:true}]
-			    $FN({userName}){
-			    	console.log(`${userName} successfully added`)
-			    }
-			}
+	const { command } = require("smart-cmd")
+	command.syntaxTree({
+	  Add: {
+	    User: {
+	      $ARGS: [{ name: "userName", label: "user_name", required: true }],
+	      $FN({ userName }) {
+		console.log(`${userName} successfully added`)
+	      }
 	    }
-    })
-    command.run()
+	  }
+	})
+	command.run()
+   
 run node app.js add user Admin
 
 	//console.log()
@@ -228,7 +230,7 @@ run node app.js add user Admin
 **Examples with no $ARGS attribute**\
 when you don't define the $ARGS attribute you can pass any number of arguments to your function
 
-	const {command}=required(“smart-cmd”)
+	const {command}=require("smart-cmd")
 
 	command.syntaxTree({
 		$FN(args){
@@ -245,7 +247,7 @@ run node app.js hello world !
 **Examples with $ARGS attribute as empty array** \
 if you se $ARGS as an empty array you force your command to show an error when you pass arguments
 
-	const {command}=required(“smart-cmd”)
+	const {command}=require("smart-cmd")
 
 	command.syntaxTree({
 		$ARGS:[],
@@ -263,11 +265,11 @@ run node app.js hello world !
 **Examples with $ARGS multiples arguments**\
 when you pass multiple arguments the order matter you cannot change the order of arguments
 
-    const {command}=required(“smart-cmd”)
-    const fs=required(“fs”)
+    const {command}=require("smart-cmd")
+    const fs=required("fs")
     
     command.syntaxTree({
-	 $ARGS:[{name:”source”,required:true},{name:destination,required: true}],
+	 $ARGS:[{name:”source”,required:true},{name:"destination",required: true}],
 	 $FN({source,destination}){
 	    fs.copyFileSync(source,destination)
 	  }
@@ -284,8 +286,8 @@ if required is omitted or equal to false the arguments is optional
 
 **Examples pass null to optional arguments**
 
-    const {command}=required(“smart-cmd”)
-    const fs=required(“fs”)
+    const {command}=require("smart-cmd")
+    const fs=required("fs")
     
     command.syntaxTree({
 	convert:{
@@ -302,7 +304,7 @@ if required is omitted or equal to false the arguments is optional
 **Examples with alias**\
 you can rewrite the previous example with alias .alias is more flexible you can pass arguments in the order you want it like key value objects
 
-    const {command}=required(“smart-cmd”)
+    const {command}=require(“smart-cmd”)
     const fs=required(“fs”)
     
     command.syntaxTree({
@@ -325,8 +327,8 @@ or
 **Examples with $FLAGS**\
 flags is an array you can pass to your function . you can use it to change the behaviour of your function like force some command
 
-    const {command}=required(“smart-cmd”)
-    const fs=required(“fs”)
+    const {command}=require("smart-cmd")
+    const fs=required("fs")
     
     command.syntaxTree({
 	rmdir:{
