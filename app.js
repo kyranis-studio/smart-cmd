@@ -1,22 +1,21 @@
 "use strict";
 var term = require( 'terminal-kit' ).terminal ;
 var {command,errCode,terminal} = require( "./index")
-var fs = require("fs)
+var fs = require("fs")
 
 const tree={
     $ARGS:[],
     $FN(prams){
-      console.log(prams)
-    },
-    bonjour:{
-      $ARGS:[{name:"nom",type:"string",required:true,alias:["-u"]}],
-      $FN({nom}){
-        console.log(`Ahla ${nom}`)
-      }
+      terminal.run({root:"my"})
     },
     back:{
       $FN(){
         terminal.popPrompt()
+      }
+    },
+    exit:{
+      $FN(){
+        terminal.exit()
       }
     },
     login:{
@@ -28,8 +27,9 @@ const tree={
     },
     selectDB:{
       $ARGS:[{name:"dbName"}],
-      $FN({dbName}){
+      $FN({dbName}){        
         terminal.pushPrompt(`[db:${dbName}]`)
+        terminal.run({root:"NOJSDB"})
       },
     },
     create:{
@@ -48,6 +48,4 @@ const tree={
     }
   }
  command.syntaxTree(tree) 
- //terminal.init({root:"NOJSDB"})
- 
  command.run()

@@ -92,17 +92,10 @@ UNEXPECTED_ARGUMENTS=6
 		console.log("missing input")
 	})
   5. terminal
-
-  terminal.init(prompt) init the prompt
-  
-  - prompt object:
-  	- prefix
-  	- root
-  	- postfix
+    
   -------
 	  const {command}=require("smart-cmd")
-	  terminal.init({prefix:"$",root:"myShell",postfix:">"})
-	  terminal.run()
+	  terminal.run({prefix:"$",root:"myShell",postfix:">"})
 	  
 run node app.js you get an node interface with a prompt
 
@@ -113,31 +106,43 @@ ctrl+c to quit
   terminal.pushPrompt()
   ------
 	const {command}=require("smart-cmd")
-	terminal.init({prefix:"$",root:"myShell",postfix:">"})
 	terminal.pushPrompt("/hello")
 	terminal.setPrompt()
-	terminal.run()
+	terminal.run({prefix:"$",root:"myShell",postfix:">"})
   
   run node app.js
   
   	$myShell/hello>
-	
+  terminal.prompt (object) you can directly change the prompt
+  
+  - prefix   exemple : terminal.prompt.prefix="$"
+  - root      exemple : terminal.prompt.prefix="myshell"
+  - postfix  exemple : terminal.prompt.prefix=">"
+  	
+  terminal.popPrompt(array)\
+  terminal.clearPrompt()\
   terminal.popPrompt()\
   
   	const {command}=require("smart-cmd")
-	terminal.init({prefix:"$",root:"myShell",postfix:">"})
 	terminal.pushPrompt("/hello")
 	terminal.popPrompt()
 	terminal.setPrompt()
-	terminal.run()
+	terminal.run({prefix:"$",root:"myShell",postfix:">"})
 
   run node app.js
   
   	$myShell>
   	
-  terminal.setPrompt() set or update the prompt\
+
   terminal.getPrompt() return the prompt as an array\
-  terminal.run() 
+  terminal.run(prompt) 
+  
+  - prompt object:
+  	- prefix
+  	- root
+  	- postfix
+  	
+   terminal.exit() 
 
 **Examples without command:**
 

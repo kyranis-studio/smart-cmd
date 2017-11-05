@@ -61,10 +61,11 @@ exports.command = {
     if(result && result.length>0){
       errors.errorsHandler(result)
     }else{
-      try{
-        if(result!==undefined)
-        execPointer.$FN(result)
-      }catch(err){
+      if(execPointer.$FN){
+        if(result!==undefined){
+          execPointer.$FN(result)
+        }
+      }else{
         if(cmds.length>0){
           var command=cmds.join(" ") 
         }else{
