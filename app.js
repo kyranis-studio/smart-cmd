@@ -1,6 +1,5 @@
 "use strict";
-var term = require( 'terminal-kit' ).terminal ;
-var {command,errCode,terminal} = require( "./index")
+var {command,errCode,terminal,setStyle} = require( "./index")
 var fs = require("fs")
 
 const tree={
@@ -31,10 +30,12 @@ const tree={
       }
     },
     selectDB:{
-      $ARGS:[{name:"dbName"}],
+      $ARGS:[{name:"dbName",required:true,type:"string"}],
       $FN({dbName}){        
-        terminal.pushPrompt(`[db:${dbName}]`)
-        terminal.run({root:"NOJSDB"})
+        terminal.pushPrompt(`[db:${dbName}]`,["magenta"])
+        var dollar=setStyle("$",['magenta'])
+        var root =setStyle("NOJSDB",["blue"])
+        terminal.run({root:dollar+root})
       },
     },
     create:{
@@ -52,5 +53,11 @@ const tree={
       },
     }
   }
- command.syntaxTree(tree) 
- command.run()
+  command.syntaxTree(tree) 
+  var dollar = setStyle("$",['magenta'])
+  var root = setStyle("NOJSDB",["blue"])
+
+  // terminal.run({root:dollar+root,styles:['bold']},function(){
+  //   console.log(setStyle("Quit",["red"]))
+  // })
+  command.run()

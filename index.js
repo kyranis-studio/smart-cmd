@@ -1,11 +1,12 @@
 "use strict";
-var term = require( 'terminal-kit' ).terminal ;
 var {parseTree}=require("./lib/parseTree")
 var {parseArgs}=require("./lib/parseArgs")
 var {errors}=require("./lib/errors")
 var {addType}=require("./lib/types")
 var {terminal}=require("./lib/terminal")
+var {setStyle,log}=require("./lib/terminal-style")
 exports.terminal=terminal
+exports.setStyle=setStyle
 exports.errCode={
   UNDEFINED_ALIAS:0,
   MISSING_INPUT:1,
@@ -49,10 +50,10 @@ exports.command = {
     if(execPointer.$ARGS){
       var result = parseArgs(parms,execPointer)
     }else if(!execPointer.$FN){
-      term.red.error("sub-command error :\n")
-      term.error(`wrong sub-command [ ${cmds[cmds.length-1]} ]  expect :\n`)
+      log.error("sub-command error :")
+      log.error(`wrong sub-command [ ${cmds[cmds.length-1]} ]  expect :`)
       Object.keys(execPointer).forEach(function(subCmd){
-        term.green(`  ${subCmd}\n`)
+        log.success(`  ${subCmd}`)
       })
       
     }else{
@@ -71,8 +72,8 @@ exports.command = {
         }else{
           var command="Root"
         }
-        term.red("error : ")
-        term(`[ ${command} ] has no function to run\n`)
+        log.error("error : ")
+        console.log(`[ ${command} ] has no function to run`)
       }
     }
   }

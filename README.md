@@ -1,11 +1,13 @@
+
+
 Smart-cmd
 ---------
 
 Smart cmd is a module to help development of command line interface (node cli) this an abstraction module 
 
- - Auto syntax checking
- - Auto error generation 
- - Auto control of argument (type ,required ...)
+ 1. Auto syntax checking
+ 2. Auto error generation 
+ 3. Auto control of argument (type ,required ...)
  
 Quick start
 -----------
@@ -27,8 +29,18 @@ Let's suppose you wanna make command line to copy a file to a destination
 	command.run()
 ------
  	run node app.js myfile.txt /home/username
+# Index
+ 1. [Syntax Tree](#syntax-tree)
+ 2. [Add Type](#add-type)
+ 3. [Override Type](#override-type)
+ 4. [Override Error](#override-error)
+ 5. [Terminal](#terminal)
+ 6. [Style Log](#style-log)
+ 7. [Exemples](#exemples)
 
 **Documentation:**
+
+### Syntax Tree
 
  1. command.sytaxTree(object) // define the syntax of your commands
 sytaxTree Object:
@@ -41,7 +53,8 @@ sytaxTree Object:
 		 - label:string describe the variable shown in error message like if 	you have    variable userName the label should be user_name if omited it will be generated from the variable name
 	 - $FN:the function to execute
 	 - $FLAGS:array of flag send to the function exemple : [-force,-f]
- 
+ ### Add Type
+
   2. command.addType(type_name,callback) : return a boolean
   
 	 - type_name : string
@@ -59,6 +72,8 @@ sytaxTree Object:
 	  }
 	})
  	 
+### Override Type
+
   3. command.overrideType(callback) : return a boolean
   override pre existed type
 	 - type_name : string
@@ -73,6 +88,8 @@ sytaxTree Object:
 	  }
 	})
 	
+### Override Error
+
   4. command.overrideError(errorCode,callback)
 	  - errorCode: a number
 	  - callback
@@ -91,11 +108,14 @@ UNEXPECTED_ARGUMENTS=6
 	command.overrideError(errCode.MISSING_INPUT,function(error){
 		console.log("missing input")
 	})
+
+### Terminal
+
   5. terminal
     
   -------
-	  const {command}=require("smart-cmd")
-	  terminal.run({prefix:"$",root:"myShell",postfix:">"})
+	  const {terminal}=require("smart-cmd")
+	  terminal.run({prefix:"$",root:"myShell",postfix:">",styles:['blue']})
 	  
 run node app.js you get an node interface with a prompt
 
@@ -103,45 +123,71 @@ run node app.js you get an node interface with a prompt
 
 ctrl+c to quit
 
-  terminal.pushPrompt()
-  ------
-	const {command}=require("smart-cmd")
+  **terminal.pushPrompt()**
+  
+	const {terminal}=require("smart-cmd")
 	terminal.pushPrompt("/hello")
-	terminal.run({prefix:"$",root:"myShell",postfix:">"})
+	terminal.run({prefix:"$",root:"myShell",postfix:">",styles:['blue']})
   
   run node app.js
   
   	$myShell/hello>
-  terminal.prompt (object) you can directly change the prompt
+  **terminal.prompt (object)** you can directly change the prompt
   
-  - prefix   exemple : terminal.prompt.prefix="$"
-  - root      exemple : terminal.prompt.prefix="myshell"
-  - postfix  exemple : terminal.prompt.prefix=">"
+ - prefix   exemple : terminal.prompt.prefix="$"
+ - root      exemple : terminal.prompt.prefix="myshell"
+ - postfix  exemple : terminal.prompt.prefix=">"
+ - styles  exemple : terminal.prompt.styles=['blue','bold'] //this use [chalk](https://github.com/chalk/chalk) to style the prompt see [style](https://github.com/chalk/chalk#styles) section you can use color bgcolor an modifier function
   	
-  terminal.clearPrompt() clear the pushed elements in the prompt\
-  terminal.setPrompt(array)\
-  terminal.popPrompt()\
+  **terminal.clearPrompt()** clear the pushed elements in the prompt\
+  **terminal.setPrompt(array)**\
+  **terminal.popPrompt()**\
   
-  	const {command}=require("smart-cmd")
+  	const {terminal}=require("smart-cmd")
 	terminal.pushPrompt("/hello")
 	terminal.popPrompt()
 
-	terminal.run({prefix:"$",root:"myShell",postfix:">"})
+	terminal.run({prefix:"$",root:"myShell",postfix:">",styles:['blue']})
 
   run node app.js
   
   	$myShell>
   	
 
-  terminal.getPrompt() return the prompt as an array\
-  terminal.run(prompt) 
+  **terminal.getPrompt()** return the prompt as an array\
+  **terminal.run(prompt,callback)** 
   
-  - prompt object:
+ - prompt object:
   	- prefix
   	- root
   	- postfix
+  	- styles
+ - callback a function called after closing the terminal this may be to show a message a do some extra work
+  
+  exemple :
+  
+	    const {terminal,setStyle}=require("smart-cmd")
+		terminal.pushPrompt("/hello")
+		terminal.popPrompt()
+		terminal.run({prefix:"$",root:"myShell",postfix:">",styles:['blue']},function(){
+			console.log(setStyle("Quit",["red"]))
+		})// this callback prin Quit with red color when closing the terminal
   	
-   terminal.exit() 
+   **terminal.exit()** 
+   
+### Style Log
+
+   6. setStyle(message,styles) return the styled string
+ - message : string
+ - style:array of string //see [chalk style](https://github.com/chalk/chalk#styles)
+
+   set style to console.log output this function use  [chalk](https://github.com/chalk/chalk) to style the output see [style](https://github.com/chalk/chalk#styles) section you can use color bgcolor an modifier function
+   
+		   const {setStyle}=require("smart-cmd")
+           var styledText = setStyle("hello world",['green','bold'])
+		   console.log(styledText)
+
+### Exemples
 
 **Examples without command:**
 
@@ -346,6 +392,3 @@ const { command } = require("smart-cmd")
 ----
 	//console.log()
 	myfolder ['-f']
-
-
-
