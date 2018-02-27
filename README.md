@@ -48,11 +48,11 @@ sytaxTree Object:
 	 - $ARGS:[object,...]:define the lists of arguments 
 		 - name * : a String define the variable name 
 		 - required: a Boolean define if he argument is required or not
-		 - alias: an array of alias of the variable name prefixed by [-] exemple:[-o,-output]
+		 - alias: an array of alias of the variable name prefixed by [--] exemple:[--o,--output]
 		 - type:sting define the variable type exemple [string, number,...]
 		 - label:string describe the variable shown in error message like if 	you have    variable userName the label should be user_name if omited it will be generated from the variable name
 	 - $FN:the function to execute
-	 - $FLAGS:array of flag send to the function exemple : [-force,-f]
+	 - $FLAGS:array of flag send to the function the variable name prefixed by [-] exemple : [-force,-f]
  ### Add Type
 
   2. command.addType(type_name,callback) : return a boolean
@@ -356,7 +356,7 @@ you can rewrite the previous example with alias .alias is more flexible you can 
 
 	command.syntaxTree({
 	  convert: {
-	    $ARGS: [{ name: "input", required: true, alias: ["-i", "-input"] }, { name: "format", alias: ["-format", "-f"] }, { name: "output", required: true, alias: ["-out", "-o"] }],
+	    $ARGS: [{ name: "input", required: true, alias: ["--i", "--input"] }, { name: "format", alias: ["--format", "--f"] }, { name: "output", required: true, alias: ["--out", "--o"] }],
 	    $FN({ input, format, output }) {
 	      console.log(input, format, output)
 	      //your code to conver video ....
@@ -365,11 +365,11 @@ you can rewrite the previous example with alias .alias is more flexible you can 
 	})
 	command.run()
 -----
-	run node app convert -out movie.mp4 -input movie.avi 
+	run node app convert --out movie.mp4 --input movie.avi 
 or
 
 -----
-	run node app convert -o movie.mp4 -i movie.avi 
+	run node app convert --o movie.mp4 --i movie.avi 
 	
 
 **Examples with $FLAGS**\
@@ -379,7 +379,7 @@ const { command } = require("smart-cmd")
 
 	command.syntaxTree({
 	  rmdir: {
-	    $FLAGS: ["-f", "--force"],
+	    $FLAGS: ["-f", "-force"],
 	    $ARGS: [{ name: "folder" }],
 	    $FN({ folder, $FLAGS }) {
 	      console.log(folder, $FLAGS)
