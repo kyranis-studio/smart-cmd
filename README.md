@@ -1,6 +1,6 @@
 
 
-Smart-cmd
+Smart-cmd (LEGACY)
 ---------
 
 Smart cmd is a module to help development of command line interface (node cli) this an abstraction module 
