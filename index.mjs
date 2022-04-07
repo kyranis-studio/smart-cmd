@@ -104,11 +104,12 @@ export const SmartCmd = class SmartCmd {
                     }else{
                         fn(argsParse.inputs, argsParse,prompt)
                     }
-
-                    if(prompt._quit){
-                        return false
-                    }else{
-                        return prompt.toString()
+                    if(prompt){
+                        if(prompt._quit){
+                            return false
+                        }else{
+                            return prompt.toString()
+                        }
                     }
                 }
             }else{
@@ -128,11 +129,11 @@ export const SmartCmd = class SmartCmd {
                     break;
                 case _ERRORS.handler.ignore:
                     if(options){
-                        let argsParse = new ArgsParse(inputs, options, this.useEqualSign)
-                        mapInput(argsParse.inputs,options.inputs)
+                        let argsParse = new CommandsParse(inputs, options, this.useEqualSign)
+                        //mapInput(argsParse.inputs,options.inputs)
                         if (fn){
                             fn(...argsParse.inputs, argsParse,prompt)
-                            return prompt.toString()
+                            if(prompt) return prompt.toString()
                         }
                     }
                     break;

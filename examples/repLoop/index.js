@@ -1,9 +1,10 @@
 
 // this is an app exemple to test the library
-import {SmartCmd,ERRORS} from "../index.mjs"
+import {SmartCmd,ERRORS} from "../../index.mjs"
 let commande = new SmartCmd()
 commande.useEqualSign = true
 commande.combineFlags = false
+commande.errorsHandlingMethod = ERRORS.handler.ignore
 let options = {
     description : "Exit command",
     flags:[
@@ -17,7 +18,7 @@ let options = {
     ]
 }
 
-commande.defineCmd(['exit'],(inputs,cmdHelpers,prompt)=>{
+commande.defineCmd(['exit'],(message,cmdHelpers,prompt)=>{
     prompt.quit(message)
 },options,errObj=>{
     console.log("error",errObj)
